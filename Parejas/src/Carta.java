@@ -1,28 +1,28 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class Carta extends JButton {
     private String imagen;
     private boolean descubierta = false;
+    private ImageIcon reverso;
 
     public Carta(String imagen) {
         this.imagen = imagen;
-        setIcon(new ImageIcon("images/carta_oculta.png"));
+        reverso = cargarImagen("img/carta_oculta.png");
 
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!descubierta) {
-                    setIcon(new ImageIcon(imagen));
-                    descubierta = true;
-                }
-            }
-        });
+        setIcon(reverso);
+        addActionListener(e -> revelarCarta());
+    }
+
+    private void revelarCarta() {
+        if (!descubierta) {
+            setIcon(cargarImagen(imagen));
+            descubierta = true;
+        }
     }
 
     public void ocultar() {
-        setIcon(new ImageIcon("images/carta_oculta.png"));
+        setIcon(reverso);
         descubierta = false;
     }
 
@@ -32,5 +32,15 @@ public class Carta extends JButton {
 
     public boolean estaDescubierta() {
         return descubierta;
+    }
+
+    private ImageIcon cargarImagen(String ruta) {
+        URL imgURL = getClass().getClassLoader().getResource(ruta);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("No se pudo cargar la imagen: " + ruta);
+            return null;
+        }
     }
 }

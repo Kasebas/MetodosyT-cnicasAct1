@@ -11,7 +11,7 @@ public class Juego extends JFrame {
     private int tiempoRestante = 60;
 
     public Juego() {
-        setTitle("Juego de Parejas");
+        setTitle("Juego de las Parejas");
         setSize(600, 600);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,11 +19,11 @@ public class Juego extends JFrame {
         // Panel de configuración
         JPanel configPanel = new JPanel();
         configPanel.add(new JLabel("Filas:"));
-        filasSelector = new JComboBox<>(new Integer[]{2, 4, 6});
+        filasSelector = new JComboBox<>(new Integer[]{2, 4});
         configPanel.add(filasSelector);
 
         configPanel.add(new JLabel("Columnas:"));
-        columnasSelector = new JComboBox<>(new Integer[]{2, 4, 6});
+        columnasSelector = new JComboBox<>(new Integer[]{2, 4});
         configPanel.add(columnasSelector);
 
         iniciarBtn = new JButton("Iniciar Juego");

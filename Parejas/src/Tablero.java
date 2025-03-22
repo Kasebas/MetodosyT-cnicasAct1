@@ -25,8 +25,8 @@ public class Tablero extends JPanel {
         int numParejas = total / 2;
 
         for (int i = 1; i <= numParejas; i++) {
-            imagenes.add("images/" + i + ".png");
-            imagenes.add("images/" + i + ".png");
+            imagenes.add("img/" + i + ".png");
+            imagenes.add("img/" + i + ".png");
         }
 
         Collections.shuffle(imagenes);
