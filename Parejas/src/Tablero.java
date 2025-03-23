@@ -46,6 +46,9 @@ public class Tablero extends JPanel {
         if (primeraCarta.getImagen().equals(segundaCarta.getImagen())) {
             primeraCarta = null;
             segundaCarta = null;
+
+
+            verificarVictoria();
         } else {
             tiempoEspera = new Timer(1000, e -> {
                 primeraCarta.ocultar();
@@ -57,4 +60,33 @@ public class Tablero extends JPanel {
             tiempoEspera.start();
         }
     }
+
+    public void deshabilitarCartas() {
+        for (Component comp : getComponents()) {
+            if (comp instanceof Carta) {
+                comp.setEnabled(false);
+            }
+        }
+    }
+
+    public void verificarVictoria() {
+        boolean todasDescubiertas = true;
+
+        for (Component comp : getComponents()) {
+            if (comp instanceof Carta) {
+                Carta carta = (Carta) comp;
+                if (!carta.estaDescubierta()) {
+                    todasDescubiertas = false;
+                    break;
+                }
+            }
+        }
+
+        if (todasDescubiertas) {
+            JOptionPane.showMessageDialog(this, "¡Has ganado! Reinicia el juego.");
+            deshabilitarCartas();
+            Juego.getInstance().habilitarBotonIniciar();
+        }
+    }
+
 }

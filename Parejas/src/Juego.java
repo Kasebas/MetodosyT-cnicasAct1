@@ -3,6 +3,8 @@ import java.awt.*;
 
 public class Juego extends JFrame {
     private Tablero tablero;
+    private static Juego instancia; //
+
     private JComboBox<Integer> filasSelector;
     private JComboBox<Integer> columnasSelector;
     private JButton iniciarBtn;
@@ -11,7 +13,8 @@ public class Juego extends JFrame {
     private int tiempoRestante = 60;
 
     public Juego() {
-        setTitle("Juego de las Parejas");
+        instancia = this; // Guardar la referencia de la instancia
+        setTitle("Juego de Parejas");
         setSize(600, 600);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,11 +22,11 @@ public class Juego extends JFrame {
         // Panel de configuración
         JPanel configPanel = new JPanel();
         configPanel.add(new JLabel("Filas:"));
-        filasSelector = new JComboBox<>(new Integer[]{2, 4});
+        filasSelector = new JComboBox<>(new Integer[]{2, 4, 6});
         configPanel.add(filasSelector);
 
         configPanel.add(new JLabel("Columnas:"));
-        columnasSelector = new JComboBox<>(new Integer[]{2, 4});
+        columnasSelector = new JComboBox<>(new Integer[]{2, 4, 6});
         configPanel.add(columnasSelector);
 
         iniciarBtn = new JButton("Iniciar Juego");
@@ -37,9 +40,20 @@ public class Juego extends JFrame {
         setVisible(true);
     }
 
+    public static Juego getInstance() {
+        return instancia;
+    }
+
+    public void habilitarBotonIniciar() {
+        if (timer != null) timer.stop();
+        iniciarBtn.setEnabled(true);
+    }
+
     private void iniciarJuego() {
         int filas = (int) filasSelector.getSelectedItem();
         int columnas = (int) columnasSelector.getSelectedItem();
+
+        iniciarBtn.setEnabled(false); // Deshabilita el botón mientras se juega
 
         if (tablero != null) remove(tablero);
         tablero = new Tablero(filas, columnas);
@@ -47,8 +61,9 @@ public class Juego extends JFrame {
         revalidate();
         repaint();
 
+        // Reiniciar el temporizador
         if (timer != null) timer.stop();
-        tiempoRestante = 60;
+        tiempoRestante = 60; // Reinicia el contador a 60 segundos
         tiempoLabel.setText("Tiempo: " + tiempoRestante);
 
         timer = new Timer(1000, e -> {
@@ -56,9 +71,12 @@ public class Juego extends JFrame {
             tiempoLabel.setText("Tiempo: " + tiempoRestante);
             if (tiempoRestante == 0) {
                 timer.stop();
-                JOptionPane.showMessageDialog(this, "Tiempo agotado");
+                JOptionPane.showMessageDialog(this, "Tiempo agotado. Reinicia el juego.");
+                tablero.deshabilitarCartas();
+                habilitarBotonIniciar();
             }
         });
         timer.start();
     }
+
 }
