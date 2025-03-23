@@ -43,12 +43,10 @@ public class Tablero extends JPanel {
     }
 
     private void verificarPareja() {
-        if (primeraCarta.getImagen().equals(segundaCarta.getImagen())) {
+        if (primeraCarta.getRutaImagen().equals(segundaCarta.getRutaImagen())) {
             primeraCarta = null;
             segundaCarta = null;
-
-
-            verificarVictoria();
+            verificarVictoria(); // Verifica si el jugador ganó
         } else {
             tiempoEspera = new Timer(1000, e -> {
                 primeraCarta.ocultar();
@@ -60,6 +58,7 @@ public class Tablero extends JPanel {
             tiempoEspera.start();
         }
     }
+
 
     public void deshabilitarCartas() {
         for (Component comp : getComponents()) {
