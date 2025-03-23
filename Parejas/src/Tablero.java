@@ -46,7 +46,9 @@ public class Tablero extends JPanel {
         if (primeraCarta.getRutaImagen().equals(segundaCarta.getRutaImagen())) {
             primeraCarta = null;
             segundaCarta = null;
-            verificarVictoria(); // Verifica si el jugador ganó
+
+
+            SwingUtilities.invokeLater(this::verificarVictoria);
         } else {
             tiempoEspera = new Timer(1000, e -> {
                 primeraCarta.ocultar();
@@ -60,6 +62,7 @@ public class Tablero extends JPanel {
     }
 
 
+
     public void deshabilitarCartas() {
         for (Component comp : getComponents()) {
             if (comp instanceof Carta) {
@@ -69,23 +72,20 @@ public class Tablero extends JPanel {
     }
 
     public void verificarVictoria() {
-        boolean todasDescubiertas = true;
-
         for (Component comp : getComponents()) {
             if (comp instanceof Carta) {
                 Carta carta = (Carta) comp;
                 if (!carta.estaDescubierta()) {
-                    todasDescubiertas = false;
-                    break;
+                    return;
                 }
             }
         }
 
-        if (todasDescubiertas) {
-            JOptionPane.showMessageDialog(this, "¡Has ganado! Reinicia el juego.");
-            deshabilitarCartas();
-            Juego.getInstance().habilitarBotonIniciar();
-        }
+
+        JOptionPane.showMessageDialog(this, "¡Has ganado! Reinicia el juego.");
+        deshabilitarCartas();
+        Juego.getInstance().habilitarBotonIniciar();
     }
+
 
 }
